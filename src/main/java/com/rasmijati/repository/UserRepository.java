@@ -25,8 +25,17 @@ public class UserRepository {
         this.list.add(u);
     }
 
-    public List<User> Show() {
+    public List<User> ShowAll() {
         return this.list;
+    }
+
+    public User ShowById(Long id) {
+        for (User u : list) {
+            if (u.getId().equals(id)) {
+                return u;
+            }
+        }
+        return null;
     }
 
     public void Delete(User u) {
