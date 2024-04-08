@@ -7,126 +7,73 @@ package com.rasmijati.controller;
 
 import com.rasmijati.model.User;
 import com.rasmijati.repository.UserRepository;
-import java.util.Scanner;
+import java.io.Serializable;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 /**
  *
  * @author admin
  */
-public class UserController {
+public class UserController implements Serializable {
 
-    private static UserRepository userRepository;
+    private User user;
+    private List<User> userList;
 
-    public void OperationSelection(UserRepository userRepository) {
-        this.userRepository = userRepository;
-        Scanner sc = new Scanner(System.in);
-        String choice;
-        do {
-            System.out.println(" Select Operation to Perform ");
-            System.out.println("Enter 1 for Create ");
-            System.out.println("Enter 2 for View ");
-            System.out.println("Enter 3 for Edit ");
-            System.out.println("Enter 4 for Delete ");
-            System.out.println("Enter 5 for Exit ");
+    @Inject
+    private UserRepository userRepository;  
 
-            System.out.println("Enter your choice : ");
-            choice = sc.next();
-            switch (choice) {
-                case "1":
-                    Create();
-                    break;
-                case "2":
-                    ShowAll();
-                    break;
-                case "3":
-                    Edit();
-                    break;
-                case "4":
-                    Delete();
-                    break;
-                case "5":
-                    return;
-                default:
-                    System.out.println("Invalid option !! please choose another option!!");
-                    break;
-            }
-        } while (!choice.equals("0"));
+    public User getUser() {
+        return user;
     }
 
-    public static void Create() {
-        String username = null;
-        String email = null;
-        String password = null;
-        Long id = null;
-        Scanner sc = new Scanner(System.in);
-
-        while (id == null) {
-            System.out.println("Enter id:");
-            id = sc.nextLong();
-        }
-        while (username == null || username.isEmpty()) {
-            System.out.println("Enter username:");
-            username = sc.next();
-        }
-        while (email == null || email.isEmpty()) {
-            System.out.println("Enter email:");
-            email = sc.next();
-        }
-        while (password == null || password.isEmpty()) {
-            System.out.println("Enter password:");
-            password = sc.next();
-        }
-        User user = new User(id, username, email, password);
-        userRepository.Create(user);
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public static void ShowAll() {
-        userRepository.ShowAll().stream().forEach(x -> System.out.println(x));
+    public List<User> getUserList() {
+        return userList;
     }
 
-    public static void Edit() {
-        String username = null;
-        String email = null;
-        String password = null;
-        Long id = null;
-        Scanner sc = new Scanner(System.in);
-        while (id == null) {
-            System.out.println("Enter id to Edit User : ");
-            id = sc.nextLong();
-        }
-        User user = userRepository.ShowById(id);
-        if (user == null) {
-            System.out.println("User with id " + id + " not found!!");
-        } else {
-            while (username == null || username.isEmpty()) {
-                System.out.println("Enter username:");
-                username = sc.next();
-            }
-            while (email == null || email.isEmpty()) {
-                System.out.println("Enter email:");
-                email = sc.next();
-            }
-            while (password == null || password.isEmpty()) {
-                System.out.println("Enter password:");
-                password = sc.next();
-            }
-        }
-        User u = new User(id, username, email, password);
-        userRepository.Edit(u);
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
     }
 
-    public static void Delete() {
-        Long id = null;
-        Scanner sc = new Scanner(System.in);
-        while (id == null) {
-            System.out.println("Enter id to Delete User : ");
-            id = sc.nextLong();
-        }
-        User user = userRepository.ShowById(id);
-        if (user == null) {
-            System.out.println("User with id " + id + " not found!!");
-        } else {
-            userRepository.Delete(user);
-        }
+    @PostConstruct
+    public void init() {
+        this.user = new User();
+        this.userList = userRepository.ShowAll();
+        System.out.println(userList.size());
+    }
+
+    public void beforeCreate() {
+        this.user = new User();
+    }
+
+    public void create() {
+        this.userList = userRepository.ShowAll();
+    }
+
+    public void Show() {
+        userRepository.ShowAll();
+    }
+
+    public void ShowById(Long id) {
+        userRepository.ShowById(id);
+    }
+
+    public void beforeEdit(User user) {
+        this.user = userRepository.ShowById(user.getId());
+    }
+
+    public void edit() {
+        userRepository.Edit(this.user);
+        this.userList = userRepository.ShowAll();
+    }
+
+    public void delete(User user) {
+        userRepository.Delete(user);
+        userList = userRepository.ShowAll();
     }
 }

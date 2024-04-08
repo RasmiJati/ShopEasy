@@ -6,19 +6,27 @@
 package com.rasmijati.repository;
 
 import com.rasmijati.model.User;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
  * @author admin
  */
+@Stateless   //to resolve unsatisfied dependency (no bean matches the injection point )
 public class UserRepository extends AbstractRepository<User> {
 
-    @Override
-    public void Edit(User u) {
-        ShowAll().stream().filter(x -> x.getId().equals(u.getId())).forEach(n -> {
-            n.setUsername(u.getUsername());
-            n.setEmail(u.getEmail());
-            n.setPassword(u.getPassword());
-        });
+    @PersistenceContext(name = "ShopEasy")   // inject entity manager
+    private EntityManager em;
+
+    public UserRepository() {
+        super(User.class);
     }
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
+
 }
