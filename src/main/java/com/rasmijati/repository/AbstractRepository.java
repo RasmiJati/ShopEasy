@@ -5,44 +5,50 @@
 package com.rasmijati.repository;
 
 import com.rasmijati.model.IEntity;
-import java.util.ArrayList;
+import com.rasmijati.model.IRepository;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
  * @author admin
  * @param <T>
  */
-public abstract class AbstractRepository<T extends IEntity> {
+public abstract class AbstractRepository<T extends IEntity> implements IRepository<T> {
 
-    List<T> list;
+    protected abstract EntityManager getEntityManager();
+    private Class<T> entityClass;
 
-    public AbstractRepository() {
-        list = new ArrayList<>();
+    public AbstractRepository(Class<T> entityClass) {
+        this.entityClass = entityClass;
     }
 
+    @Override
     public void Create(T t) {
-        this.list.add(t);
+        getEntityManager().persist(t);
+        getEntityManager().flush();
     }
 
+    @Override
     public List<T> ShowAll() {
-        return list;
+        return getEntityManager().createQuery("select t from " + entityClass.getName() + "t").getResultList();
     }
 
+    @Override
     public T ShowById(Long id) {
-        for (T t : list) {
-            if (t.getId().equals(id)) {
-                return t;
-            }
-        }
-        return null;
+        return getEntityManager().find(entityClass, id);
     }
 
-    public void Delete(T t) {
-        this.list.remove(t);
-    }
-
+    @Override
     public void Edit(T t) {
-
+        getEntityManager().merge(t);
+        getEntityManager().flush();
     }
+
+    @Override
+    public void Delete(T t) {
+        getEntityManager().remove(t);
+        getEntityManager().flush();
+    }
+
 }
