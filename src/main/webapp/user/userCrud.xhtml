@@ -1,84 +1,111 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>User</title>
     </h:head>
     <h:body>
-        <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                        xmlns:h="http://xmlns.jcp.org/jsf/html"
-                        xmlns:f="http://xmlns.jcp.org/jsf/core"
-                        xmlns:p="http://primefaces.org/ui"
-                        xmlns:c="http://java.sun.com/jsp/jstl/core"
-                        xmlns:ui="http://java.sun.com/jsf/facelets"
-                        template="/layout.xhtml">
-            <ui:define name="Center">       
-                <h:form id="form_user">
-                    <p:growl id="messages" showDetail="true"/>
-                    <p:toolbar>
-                        <p:toolbarGroup>
-                            <p:commandButton id="add-user-button" value="New" icon="pi pi-plus" actionListener="#{userController.beforeCreate()}"
-                                             oncomplete="PF('manageDialog').show()" update="create_form"/>
-                        </p:toolbarGroup>
-                    </p:toolbar>
-                    <p:dataTable id="dt_users" widgetVar="dtUsers" var="user" value="#{userController.userList}"
-                                 reflow="true" styleClass="users-table" selectionMode="single"
-                                 selection="#{userController.user}" rowKey="#{user.id}" paginator="true"
-                                 rows="5" rowSelectMode="add" paginatorPosition="bottom">
-
-                        <f:facet name="header">
-                            <p:outputLabel value="USERS" />
-                        </f:facet>
-                        <p:column headerText="Id" sortBy="#{user.id}" filterBy="#{user.id}">
-                            <h:outputText value="#{user.id}"/>
-                        </p:column>
-                        <p:column headerText="Name" sortBy="#{user.name}" filterBy="#{user.name}">
-                            <h:outputText value="#{user.name}"/>
-                        </p:column>
-
-                        <p:column headerText="Action">
+        <h:form id="form_user">
+            <p:growl id="messages" showDetail="true"/>
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:commandButton id="add-user-button" value="New" icon="pi pi-plus" actionListener="#{userController.beforeCreate()}"
+                                     oncomplete="PF('manageUserDialog').show()" update="frm_create_user"/>
+                </p:toolbarGroup>
+            </p:toolbar>
 
 
-                            <p:commandButton id="edit" value="Edit" icon="pi pi-pencil" actionListener="#{userController.beforeEdit(user)}" 
-                                             oncomplete="PF('manageDialog').show()" process="@this"
-                                             update="@this create_form"/>
-                            <p:commandButton icon="pi pi-trash" value="Delete" action="#{userController.delete(user)}" 
-                                             process="@this" update=":form_user:dt_users"><!--delete(user) is the user given in var property of data table -->
-                                <p:confirm  header=" Delete Confirmation" message="Are You Sure ?" />
-                            </p:commandButton>
-                        </p:column>
-                    </p:dataTable>
-                </h:form>
-
-                <p:dialog header="User Details" showEffect="fade" modal="false"
-                          widgetVar="manageDialog" responsive="true" id="dlg_manage">
-                    <h:form id="create_form">
-                        <p:panelGrid columns="2">
-                            <p:outputLabel for="inptxt_name" id="olbl_name" value="Name" />
-                            <p:inputText id="inptxt_name" value="#{userController.user.name}" required="true" label="Name"
-                                         title="Name">
-                                <p:ajax update="@this" process="@this" />
-                            </p:inputText>
-                            <p:commandButton id="user_create" value="Add" icon="pi pi-check" actionListener="#{userController.create()}"
-                                             update=":form_user:dt_users" process="@this" oncomplete="PF('manageDialog').hide();" 
-                                             rendered="#{userController.user.id eq null}" />
-                            <p:commandButton id="user_edit" value="Edit" icon="pi pi-check" actionListener="#{userController.edit()}"
-                                             process="@this" oncomplete="PF('manageDialog').hide();" update="@this :form_user:dt_users"
-                                             rendered="#{userController.user.id ne null}" />
+            <p:dataTable id="dt_users" widgetVar="dtUsers" var="user" value="#{userController.users}" lazy="true"
+                         reflow="true" styleClass="users-table" selectionMode="single"
+                         selection="#{userController.user}" rowKey="#{user.id}" paginator="true"
+                         rows="10" rowSelectMode="add" paginatorPosition="bottom">
 
 
-                            <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageDialog').hide()"
-                                             class="ui-button-secondary"/>
-                        </p:panelGrid>
-                    </h:form>
-                </p:dialog>
-                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" id="ui-confirm-yes-btn"/>
-                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" id="ui-confirm-no-btn"/>
-                </p:confirmDialog>
-            </ui:define>
-        </ui:composition>        
+                <f:facet name="header">
+                    <p:outputLabel value="USERS" />
+                </f:facet>
+
+                <p:column headerText="Id" sortBy="#{user.id}" filterBy="#{user.id}">
+                    <h:outputText value="#{user.id}"/>
+                </p:column>
+
+                <p:column headerText="User Name" sortBy="#{user.username}" filterBy="#{user.username}">
+                    <h:outputText value="#{user.username}"/>
+                </p:column>
+
+                <p:column headerText="Email" sortBy="#{user.email}" filterBy="#{user.email}">
+                    <h:outputText value="#{user.email}"/>
+                </p:column>
+
+                <p:column headerText="Password" sortBy="#{user.password}" filterBy="#{user.password}">
+                    <h:outputText value="#{user.password}"/>
+                </p:column>
+
+                <p:column headerText="Action">
+
+                    <p:commandButton id="edit" icon="pi pi-pencil" actionListener="#{userController.beforeEdit(user)}" 
+                                     oncomplete="PF('manageUserDialog').show()" process="@this"
+                                     update="@this frm_create_user"/>
+
+                    <p:commandButton icon="pi pi-trash" action="#{userController.delete(user)}" 
+                                     process="@this" update=":form_user:dt_users">
+                        <p:confirm  header=" Delete Confirmation" message="Are You Sure ?" />
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+
+
+        <p:dialog header="User Details" showEffect="fade" modal="false"
+                  widgetVar="manageUserDialog" responsive="true" id="dlg_manage">
+
+            <h:form id="frm_create_user">
+                <p:panelGrid columns="2">
+
+                    <p:outputLabel for="inptxt_name" id="olbl_name" value=" User Name" />
+                    <p:inputText id="inptxt_name" value="#{userController.user.username}" required="true" label="User Name"
+                                 title="User Name">
+                        <p:ajax update="@this" process="@this" />
+                    </p:inputText>
+
+                    <p:outputLabel for="inptxt_email" id="olbl_email" value=" Email" />
+                    <p:inputText id="inptxt_email" value="#{userController.user.email}" required="true" label="Email"
+                                 title="Email">
+                        <p:ajax update="@this" process="@this" />
+                    </p:inputText>
+
+                    <p:outputLabel for="inptxt_password" id="olbl_password" value=" Password " />
+                    <p:inputText id="inptxt_password" value="#{userController.user.password}" required="true" label="Password"
+                                 title="Password">
+                        <p:ajax update="@this" process="@this" />
+                    </p:inputText>
+
+                    <p:commandButton id="user_create" value="Add" icon="pi pi-check" actionListener="#{userController.create()}"
+                                     update=":form_user:dt_users" process="@this" oncomplete="PF('manageUserDialog').hide();" 
+                                     rendered="#{userController.user.id eq null}" />
+
+
+                    <p:commandButton id="user_edit" value="Edit" icon="pi pi-check" actionListener="#{userController.edit()}"
+                                     process="@this" oncomplete="PF('manageUserDialog').hide();" update="@this :form_user:dt_users"
+                                     rendered="#{userController.user.id ne null}" />
+
+                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageUserDialog').hide()"
+                                     class="ui-button-secondary"/>
+                </p:panelGrid>
+            </h:form>
+
+        </p:dialog>
+
+
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" id="ui-confirm-yes-btn"/>
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" id="ui-confirm-no-btn"/>
+        </p:confirmDialog>
+
     </h:body>
-</html>
-
+</html>         

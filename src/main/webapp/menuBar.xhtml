@@ -13,20 +13,17 @@
 
             <p:menuitem value="Home" action ="/index.xhtml?faces-redirect=true" icon="pi pi-fw pi-home"/>
 
-            <p:menuitem value="User" action ="#" icon="pi pi-fw pi-user"/>
-
-
-
-            <p:submenu label="Product" icon="pi pi-shopping-cart">
-                <p:menuitem value="Purchase" action ="#" icon ="pi pi-list" />
-                <p:menuitem value="Sales" action="#" icon="pi pi-fw pi-list"/>
-                <p:menuitem value="User" action ="/user/userCrud.xhtml?faces-redirect=true" icon="pi pi-list "/>
-
-            </p:submenu>
-
+            <p:menuitem icon="pi pi-fw pi-user" value="Login" action ="#"/>
             <p:divider layout="vertical"/>
+            <p:menuitem value="Sign up" action="/user/userCrud.xhtml?faces-redirect=true"/>
 
-            <p:menuitem value="Quit" icon="pi pi-fw pi-power-off"/>
+            <f:facet name="options">
+                <div class="ui-input-icon-left mr-2">
+                    <i class="pi pi-fw pi-search" />
+                    <p:inputText placeholder="Search"/>
+                </div>
+                <p:button value="Logout" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info"/>
+            </f:facet>
         </p:menubar>
     </h:form>
 </ui:composition>

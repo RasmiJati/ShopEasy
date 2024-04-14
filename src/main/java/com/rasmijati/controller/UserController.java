@@ -10,16 +10,21 @@ import com.rasmijati.repository.UserRepository;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  *
  * @author admin
  */
+
+@Named
+@ViewScoped     //Added @Named and @ViewScoped to the UserController class to register it in the Faces context.
 public class UserController implements Serializable {
 
     private User user;
-    private List<User> userList;
+    private List<User> users;
 
     @Inject
     private UserRepository userRepository;  
@@ -32,19 +37,19 @@ public class UserController implements Serializable {
         this.user = user;
     }
 
-    public List<User> getUserList() {
-        return userList;
+    public List<User> getUsers() {
+        return users;
     }
 
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     @PostConstruct
     public void init() {
         this.user = new User();
-        this.userList = userRepository.ShowAll();
-        System.out.println(userList.size());
+        this.users = userRepository.ShowAll();
+        System.out.println(users.size());
     }
 
     public void beforeCreate() {
@@ -52,7 +57,7 @@ public class UserController implements Serializable {
     }
 
     public void create() {
-        this.userList = userRepository.ShowAll();
+        this.users = userRepository.ShowAll();
     }
 
     public void Show() {
@@ -69,11 +74,11 @@ public class UserController implements Serializable {
 
     public void edit() {
         userRepository.Edit(this.user);
-        this.userList = userRepository.ShowAll();
+        this.users = userRepository.ShowAll();
     }
 
     public void delete(User user) {
         userRepository.Delete(user);
-        userList = userRepository.ShowAll();
+        users = userRepository.ShowAll();
     }
 }
