@@ -31,7 +31,7 @@ public abstract class AbstractRepository<T extends IEntity> implements IReposito
 
     @Override
     public List<T> ShowAll() {
-        return getEntityManager().createQuery("select t from " + entityClass.getName() + "t").getResultList();
+        return getEntityManager().createQuery("select t from " + entityClass.getName() + " t").getResultList();
     }
 
     @Override
@@ -47,7 +47,8 @@ public abstract class AbstractRepository<T extends IEntity> implements IReposito
 
     @Override
     public void Delete(T t) {
-        getEntityManager().remove(t);
+        T e = getEntityManager().merge(t);
+        getEntityManager().remove(e);
         getEntityManager().flush();
     }
 

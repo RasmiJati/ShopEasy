@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.rasmijati.controller;
 
 import com.rasmijati.model.User;
@@ -10,24 +5,21 @@ import com.rasmijati.repository.UserRepository;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-/**
- *
- * @author admin
- */
-
 @Named
-@ViewScoped     //Added @Named and @ViewScoped to the UserController class to register it in the Faces context.
+@ViewScoped
 public class UserController implements Serializable {
 
     private User user;
     private List<User> users;
 
     @Inject
-    private UserRepository userRepository;  
+    private UserRepository userRepository;
 
     public User getUser() {
         return user;
@@ -49,7 +41,6 @@ public class UserController implements Serializable {
     public void init() {
         this.user = new User();
         this.users = userRepository.ShowAll();
-        System.out.println(users.size());
     }
 
     public void beforeCreate() {
@@ -57,15 +48,13 @@ public class UserController implements Serializable {
     }
 
     public void create() {
-        this.users = userRepository.ShowAll();
-    }
-
-    public void Show() {
-        userRepository.ShowAll();
-    }
-
-    public void ShowById(Long id) {
-        userRepository.ShowById(id);
+        try {
+            userRepository.Create(this.user);
+            this.users = userRepository.ShowAll();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User added successfully"));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to add user"));
+        }
     }
 
     public void beforeEdit(User user) {
@@ -73,12 +62,22 @@ public class UserController implements Serializable {
     }
 
     public void edit() {
-        userRepository.Edit(this.user);
-        this.users = userRepository.ShowAll();
+        try {
+            userRepository.Edit(this.user);
+            this.users = userRepository.ShowAll();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User updated successfully"));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to update user"));
+        }
     }
 
     public void delete(User user) {
-        userRepository.Delete(user);
-        users = userRepository.ShowAll();
+        try {
+            userRepository.Delete(user);
+            this.users = userRepository.ShowAll();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User deleted successfully"));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to delete user"));
+        }
     }
 }
