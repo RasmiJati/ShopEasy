@@ -6,17 +6,36 @@ package com.rasmijati.model;
 
 import java.math.BigDecimal;
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
  * @author admin
  */
-public class Product implements IEntity{
+@Entity
+@Table(name = "product")
+public class Product implements IEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
+
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
+
+    @Column(name = "description", nullable = false, length = 200)
     private String description;
+
+    @Column(name = "price", nullable = false)
     private BigDecimal price;
+
+    @Column(name = "image", nullable = false, length = 50)
     private String image;
 
     public Product() {
