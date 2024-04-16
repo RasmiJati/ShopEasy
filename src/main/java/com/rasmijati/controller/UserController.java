@@ -52,6 +52,7 @@ public class UserController implements Serializable {
             userRepository.Create(this.user);
             this.users = userRepository.ShowAll();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User added successfully"));
+            beforeCreate(); 
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to add user"));
         }
@@ -66,6 +67,7 @@ public class UserController implements Serializable {
             userRepository.Edit(this.user);
             this.users = userRepository.ShowAll();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User updated successfully"));
+            beforeEdit(user);
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to update user"));
         }

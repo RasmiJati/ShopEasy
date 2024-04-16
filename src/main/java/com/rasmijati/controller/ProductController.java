@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -23,6 +24,7 @@ public class ProductController implements Serializable {
     private Product product;
     private List<Product> list;
 
+    @Inject
     private ProductRepository productRepository;
 
     public Product getProduct() {
@@ -51,18 +53,20 @@ public class ProductController implements Serializable {
         this.product = new Product();
     }
 
-    public void Create(Product p) {
-        productRepository.Create(p);
+    public void Create() {
+        productRepository.Create(this.product);
         this.list = productRepository.ShowAll();
+        beforeCreate();
     }
 
     public void beforeEdit(Product p) {
-        this.product = productRepository.ShowById(p.getId());
+        product = productRepository.ShowById(p.getId());
     }
 
     public void Edit() {
         productRepository.Edit(this.product);
         this.list = productRepository.ShowAll();
+        beforeEdit(product);
     }
 
     public void Delete(Product p) {

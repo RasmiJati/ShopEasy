@@ -5,6 +5,7 @@
 package com.rasmijati.repository;
 
 import com.rasmijati.model.Product;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -12,6 +13,7 @@ import javax.persistence.PersistenceContext;
  *
  * @author admin
  */
+@Stateless
 public class ProductRepository extends AbstractRepository<Product> {
 
     @PersistenceContext(name = "ShopEasy")
