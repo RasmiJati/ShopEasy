@@ -16,7 +16,7 @@ import javax.inject.Named;
 public class UserController implements Serializable {
 
     private User user;
-    private List<User> users;
+    private List<User> list;
 
     @Inject
     private UserRepository userRepository;
@@ -29,30 +29,30 @@ public class UserController implements Serializable {
         this.user = user;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public List<User> getList() {
+        return list;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setList(List<User> list) {
+        this.list = list;
     }
 
     @PostConstruct
     public void init() {
         this.user = new User();
-        this.users = userRepository.ShowAll();
+        this.list = userRepository.ShowAll();
     }
 
     public void beforeCreate() {
         this.user = new User();
     }
 
-    public void create() {
+    public void Create() {
         try {
             userRepository.Create(this.user);
-            this.users = userRepository.ShowAll();
+            this.list = userRepository.ShowAll();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User added successfully"));
-            beforeCreate(); 
+            beforeCreate();
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to add user"));
         }
@@ -62,10 +62,10 @@ public class UserController implements Serializable {
         this.user = userRepository.ShowById(user.getId());
     }
 
-    public void edit() {
+    public void Edit() {
         try {
             userRepository.Edit(this.user);
-            this.users = userRepository.ShowAll();
+            this.list = userRepository.ShowAll();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User updated successfully"));
             beforeEdit(user);
         } catch (Exception e) {
@@ -73,10 +73,10 @@ public class UserController implements Serializable {
         }
     }
 
-    public void delete(User user) {
+    public void Delete(User user) {
         try {
             userRepository.Delete(user);
-            this.users = userRepository.ShowAll();
+            this.list = userRepository.ShowAll();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User deleted successfully"));
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to delete user"));

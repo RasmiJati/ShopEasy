@@ -8,21 +8,22 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:form>
         <p:growl id="messages"/>
+
         <p:menubar style="background-color: #f2f2f2;">
 
             <p:menuitem value="Home" action ="/index.xhtml?faces-redirect=true" icon="pi pi-fw pi-home"/>
-            <p:menuitem value="Product" action="/product/productCrud.xhtml?faces-redirect=true"/>
-
-            <p:menuitem icon="pi pi-fw pi-user" value="Login" action ="#"/>
-            <p:divider layout="vertical"/>
-            <p:menuitem value="Sign up" action="/user/userCrud.xhtml?faces-redirect=true"/>
-            <f:facet name="options">
-                <div class="ui-input-icon-left mr-2">
-                    <i class="pi pi-fw pi-search" />
-                    <p:inputText placeholder="Search"/>
-                </div>
-                <p:button value="Logout" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info"/>
-            </f:facet>
+            <p:menuitem value="User" icon="pi pi-fw pi-user" action="/user/displayUser.xhtml?faces-redirect=true"/>
+            <p:menuitem value="Product" icon="pi pi-box" action="#"/>
+            <p:menuitem value="Order" icon="pi pi-list" action="#"/>
+            <p:submenu label="Setting" icon="pi pi-cog">
+                <p:submenu label="Profile" icon="pi pi-user-edit">
+                    <p:menuitem value="Add" icon="pi pi-fw pi-user" action="/user/addUser.xhtml?faces-redirect=true"/>
+                    <p:menuitem value="Edit" icon="pi pi-pencil"/>
+                    <p:menuitem value="Delete" icon="pi pi-trash"/>
+                </p:submenu>
+                <p:divider/>
+                <p:menuitem value="Logout" icon="pi pi-fw pi-sign-out" action ="/index.xhtml?faces-redirect=true"/>
+            </p:submenu>
         </p:menubar>
     </h:form>
 </ui:composition>
