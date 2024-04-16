@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/layout.xhtml">
+    <ui:define name="Center">       
+        <h:form id="form_product">
+            <p:growl id="messages" showDetail="true"/>
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:commandButton id="add-product-button" value="New" icon="pi pi-plus" actionListener="#{productController.beforeCreate()}"
+                                     oncomplete="PF('manageProductDialog').show()" update="form_create_product"/>
+                </p:toolbarGroup>
+            </p:toolbar>
+
+            <p:dataTable id="dt_products" widgetVar="dtProducts" var="product" value="#{productController.list}"
+                         reflow="true" styleClass="products-table" rowIndexVar="rowIndex" selectionMode="single"
+                         selection="#{productController.product}" rowKey="#{product.id}" paginator="true"
+                         rows="10" rowSelectMode="add" paginatorPosition="bottom">
+
+                <f:facet name="header">
+                    <p:outputLabel value="PRODUCT DETAILS" />
+                </f:facet>
+
+                <p:column headerText="S.No.">
+                    <h:outputText value="#{rowIndex+1}"/>
+                </p:column>
+                <p:column headerText="Product Name" sortBy="#{product.name}" filterBy="#{product.name}">
+                    <h:outputText value="#{product.name}"/>
+                </p:column>
+
+                <p:column headerText="Description" sortBy="#{product.description}" filterBy="#{product.description}">
+                    <h:outputText value="#{product.description}"/>
+                </p:column>
+
+                <p:column headerText="Price" sortBy="#{product.price}" filterBy="#{product.price}">
+                    <h:outputText value="#{product.price}"/>
+                </p:column>
+
+                <p:column headerText="Image" sortBy="#{product.image}" filterBy="#{product.image}">
+                    <h:outputText value="#{product.image}"/>
+                </p:column>
+
+                <p:column headerText="Action">
+
+                    <p:commandButton id="edit" icon="pi pi-pencil" actionListener="#{productController.beforeEdit(product)}" 
+                                     oncomplete="PF('manageProductDialog').show()" process="@this"
+                                     update="@this form_create_product"/>
+
+                    <p:commandButton icon="pi pi-trash" action="#{productController.Delete(product)}" 
+                                     process="@this" update=":form_product:dt_products">
+                        <p:confirm  header=" Delete Confirmation" message="Are You Sure ?" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <p:dialog header="Product" showEffect="fade" modal="false"
+                  widgetVar="manageProductDialog" responsive="true" id="dlg_manage">
+
+            <h:form id="form_create_product">
+                <p:panelGrid columns="2">
+
+                    <p:outputLabel for="inptxt_name" id="olbl_name" value="Product Name" />
+                    <p:inputText id="inptxt_name" value="#{productController.product.name}" required="true" label="Product Name"
+                                 title="Product Name">
+                        <p:ajax update="@this" process="@this" />
+                    </p:inputText>
+
+                    <p:outputLabel for="inptxt_description" id="olbl_description" value="Description" />
+                    <p:inputText id="inptxt_description" value="#{productController.product.description}" required="true" label="Description"
+                                 title="Description">
+                        <p:ajax update="@this" process="@this" />
+                    </p:inputText>
+
+
+                    <p:outputLabel for="inptxt_price" id="olbl_price" value="Price" />
+                    <p:inputText id="inptxt_price" value="#{productController.product.price}" required="true" label="Price"
+                                 title="Price">
+                        <p:ajax update="@this" process="@this" />
+                    </p:inputText>
+
+                    <p:outputLabel for="inptxt_image" id="olbl_image" value="Image" />
+                    <p:inputText id="inptxt_image" value="#{productController.product.image}" required="true" label="Image"
+                                 title="Image">
+                        <p:ajax update="@this" process="@this" />
+                    </p:inputText>
+
+
+                    <p:commandButton id="product_create" value="Add" icon="pi pi-check" actionListener="#{productController.Create()}"
+                                     process="@this" oncomplete="PF('manageProductDialog').hide();" update=":form_product:dt_products"
+                                     rendered="#{productController.product.id eq null}" />
+
+
+                    <p:commandButton id="product_edit" value="Edit" icon="pi pi-check" actionListener="#{productController.Edit()}"
+                                     process="@this" oncomplete="PF('manageProductDialog').hide();" update="@this :form_product:dt_products"
+                                     rendered="#{productController.product.id ne null}" />
+
+                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
+                                     class="ui-button-secondary"/>
+                </p:panelGrid>
+            </h:form>
+
+        </p:dialog>
+
+
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" id="ui-confirm-yes-btn"/>
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" id="ui-confirm-no-btn"/>
+        </p:confirmDialog>
+    </ui:define>
+</ui:composition>

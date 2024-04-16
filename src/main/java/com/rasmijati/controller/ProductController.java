@@ -56,7 +56,6 @@ public class ProductController implements Serializable {
     public void Create() {
         productRepository.Create(this.product);
         this.list = productRepository.ShowAll();
-        beforeCreate();
     }
 
     public void beforeEdit(Product p) {
@@ -66,7 +65,6 @@ public class ProductController implements Serializable {
     public void Edit() {
         productRepository.Edit(this.product);
         this.list = productRepository.ShowAll();
-        beforeEdit(product);
     }
 
     public void Delete(Product p) {
