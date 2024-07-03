@@ -9,29 +9,31 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/layout.xhtml">
     <ui:define name="Center"> 
-        <p:dataTable id="dt_users" widgetVar="dtUsers" var="user" value="#{userController.list}"
-                     reflow="true" styleClass="users-table" rowIndexVar="rowIndex" selectionMode="single"
-                     selection="#{userController.user}" rowKey="#{user.id}" paginator="true"
-                     rows="5" rowSelectMode="add" paginatorPosition="bottom">
+        <h:form id="form_user">
+            <p:dataTable id="dt_users" widgetVar="dtUsers" var="user" value="#{userController.list}"
+                         reflow="true" styleClass="users-table" rowIndexVar="rowIndex" selectionMode="single"
+                         selection="#{userController.user}" rowKey="#{user.id}" paginator="true"
+                         rows="5" rowSelectMode="add" paginatorPosition="bottom">
 
-            <f:facet name="header">
-                <p:outputLabel value="USER DETAILS" />
-            </f:facet>
+                <f:facet name="header">
+                    <p:outputLabel value="USER DETAILS" />
+                </f:facet>
 
-            <p:column headerText="S.No.">
-                <h:outputText value="#{rowIndex+1}"/>
-            </p:column>
-            <p:column headerText="User Name" sortBy="#{user.username}" filterBy="#{user.username}">
-                <h:outputText value="#{user.username}"/>
-            </p:column>
+                <p:column headerText="S.No.">
+                    <h:outputText value="#{rowIndex+1}"/>
+                </p:column>
+                <p:column headerText="User Name" sortBy="#{user.username}" filterBy="#{user.username}">
+                    <h:outputText value="#{user.username}"/>
+                </p:column>
 
-            <p:column headerText="Email" sortBy="#{user.email}" filterBy="#{user.email}">
-                <h:outputText value="#{user.email}"/>
-            </p:column>
+                <p:column headerText="Email" sortBy="#{user.email}" filterBy="#{user.email}">
+                    <h:outputText value="#{user.email}"/>
+                </p:column>
 
-            <p:column headerText="Password" sortBy="#{user.password}" filterBy="#{user.password}">
-                <h:outputText value="#{user.password}"/>
-            </p:column>
-        </p:dataTable>
+                <p:column headerText="Password" sortBy="#{user.password}" filterBy="#{user.password}">
+                    <h:outputText value="#{user.password}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
     </ui:define>
 </ui:composition>

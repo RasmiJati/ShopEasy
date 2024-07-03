@@ -3,5 +3,18 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
               version="2.2">
-
+    <Scene Scope="Project" version="2">
+        <Scope Scope="Faces Configuration Only"/>
+        <Scope Scope="Project"/>
+        <Scope Scope="All Faces Configurations"/>
+    </Scene>
+    
+    <!--    <navigation-rule>
+        <from-view-id>/addUser.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/displayUser.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>-->
+    
 </faces-config>

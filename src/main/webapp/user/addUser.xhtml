@@ -20,39 +20,7 @@
 
             <p:dataTable id="dt_users" widgetVar="dtUsers" var="user" value="#{userController.list}"
                          reflow="true" styleClass="users-table" rowIndexVar="rowIndex" selectionMode="single"
-                         selection="#{userController.user}" rowKey="#{user.id}" paginator="true"
-                         rows="10" rowSelectMode="add" paginatorPosition="bottom">
-
-                <f:facet name="header">
-                    <p:outputLabel value="USER DETAILS" />
-                </f:facet>
-
-                <p:column headerText="S.No.">
-                    <h:outputText value="#{rowIndex+1}"/>
-                </p:column>
-                <p:column headerText="User Name" sortBy="#{user.username}" filterBy="#{user.username}">
-                    <h:outputText value="#{user.username}"/>
-                </p:column>
-
-                <p:column headerText="Email" sortBy="#{user.email}" filterBy="#{user.email}">
-                    <h:outputText value="#{user.email}"/>
-                </p:column>
-
-                <p:column headerText="Password" sortBy="#{user.password}" filterBy="#{user.password}">
-                    <h:outputText value="#{user.password}"/>
-                </p:column>
-
-                <p:column headerText="Action">
-
-                    <p:commandButton id="edit" icon="pi pi-pencil" actionListener="#{userController.beforeEdit(user)}" 
-                                     oncomplete="PF('manageUserDialog').show()" process="@this"
-                                     update="@this form_create_user"/>
-
-                    <p:commandButton icon="pi pi-trash" action="#{userController.Delete(user)}" 
-                                     process="@this" update=":form_user:dt_users">
-                        <p:confirm  header=" Delete Confirmation" message="Are You Sure ?" />
-                    </p:commandButton>
-                </p:column>
+                         selection="#{userController.user}" rowKey="#{user.id}">
             </p:dataTable>
         </h:form>
         <p:dialog header="User" showEffect="fade" modal="false"
